@@ -1,5 +1,5 @@
 class V1::Api::TodosController < ApplicationController
-  before_action :set_todo, only: %i[ show update destroy ]
+  before_action :set_todo, only: [:show, :update, :destroy, :update_completed]
 
   # GET /api/todos
   def index
@@ -24,7 +24,16 @@ class V1::Api::TodosController < ApplicationController
     end
   end
 
-  # PATCH/PUT /api/todos/1
+  # PATCH v1/api/todos/1/updated_completed
+  def update_completed
+      if params[:completed].present? && @todo.update(completed: params[:completed])
+        render json: @todo, status: :ok
+      else
+        render json: { error: "The 'completed' parameter passed as false or missing" }, status: :unprocessable_entity
+      end
+  end
+
+  # PUT v1/api/todos/1
   def update
     if @todo.update(todo_params)
       render json: @todo
@@ -49,3 +58,18 @@ class V1::Api::TodosController < ApplicationController
       params.require(:todo).permit(:todo_name, :completed)
     end
 end
+
+# x = {"a": "yello", "b": "green"}   "1104"
+# x["a"]                                "1165"
+
+
+# x = {a: "yello", b: "green"}
+# x= {:a => "yello", :b => "green"}
+
+# x[:a]
+# x.a
+
+# y = x.with_indifference_access
+
+
+# "a"

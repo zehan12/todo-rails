@@ -3,7 +3,9 @@ Rails.application.routes.draw do
     namespace :api do
       resources :todos do
         member do
-          patch "update_completed"
+        # patch v1/api/todos/:id/update_completed
+          patch 'update_completed'
+          put 'update'
         end
       end
     end
